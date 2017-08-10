@@ -1,0 +1,34 @@
+version: '2'
+services:
+
+  schedule_db:
+    container_name: schedule_db
+    image: mysql
+    volumes:
+      - ../db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 785612894523
+      MYSQL_DATABASE: schedule_db
+      MYSQL_USER: schedule_user
+      MYSQL_PASSWORD: schedule_pass
+
+  schedule_app:
+    container_name: schedule_app
+    build: ./app/
+    links:
+      - schedule_db
+    volumes:
+      - ../www:/var/www/html
+    expose:
+      - "9000"
+
+  schedule_nginx:
+      container_name: schedule_nginx
+      build: ./nginx
+      ports:
+        - "8000:80"
+      links:
+        - schedule_app
+      volumes_from:
+        - schedule_app
