@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('practicies', 'PracticeController');
+Route::resource('events', 'EventController');
+Route::resource('schedules', 'ScheduleController');
+Route::resource('users', 'UserController');
