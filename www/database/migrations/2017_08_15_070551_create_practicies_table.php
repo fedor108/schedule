@@ -13,7 +13,7 @@ class CreatePracticiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('practicies', function (Blueprint $table) {
+        Schema::create('practices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('title');
@@ -31,6 +31,6 @@ class CreatePracticiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('practicies');
+        Schema::dropIfExists('practices');
     }
 }

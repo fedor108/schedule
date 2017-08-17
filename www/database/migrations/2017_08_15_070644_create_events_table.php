@@ -17,10 +17,11 @@ class CreateEventsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('title');
+            $table->integer('practice_id');
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
             $table->text('text')->nullable();
-            $table->integer('price')->nullable();
+            $table->string('price')->nullable();
             $table->text('conditions')->nullable();
             $table->string('room')->nullable();
             $table->timestamps();
