@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Schedule;
+use App\Event;
 
 class ScheduleController extends Controller
 {
@@ -13,7 +15,11 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $data = Schedule::all();
+        $events = Event::all();
+
+        return view('schedules.index',  compact('data', 'events'))
+            ->with('page_title', 'Расписание');
     }
 
     /**
@@ -23,7 +29,7 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        //
+        return view('schedules.create');
     }
 
     /**
@@ -34,7 +40,15 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Schedule;
+        $data->fill($request->all());
+
+        $data->save();
+
+        return redirect()
+            ->action('ScheduleController@index')
+            ->with('messages', ['Добавлено расписание'])
+            ->with('status', 'success');
     }
 
     /**
@@ -56,7 +70,11 @@ class ScheduleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Schedule::findOrFail($id);
+        $events = Event::all();
+
+        return view('schedules.edit', compact('data', 'events'))
+            ->with('page_title', 'Расписание');
     }
 
     /**
@@ -68,7 +86,15 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Schedule::findOrFail($id);
+        $data->fill($request->all());
+        $data->save();
+
+        return redirect()
+            ->action('ScheduleController@index')
+            ->with('messages', ['Сохранено расписание'])
+            ->with('status', 'success');
+
     }
 
     /**
@@ -79,6 +105,12 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Schedule::findOrFail($id);
+        $data->delete();
+
+        return redirect()
+            ->action('ScheduleController@index')
+            ->with('messages', ['Удалено расписание'])
+            ->with('status', 'success');
     }
 }

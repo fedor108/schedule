@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
 class UserController extends Controller
 {
@@ -13,7 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $data = User::all();
+        return view('users.index',  compact('data'))
+            ->with('page_title', 'Люди')
+            ->with('page_subtitle', $data->count());
     }
 
     /**
@@ -23,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -34,7 +38,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new User;
+        $data->fill($request->all());
+        $data->password =bcrypt('nopassword');
+
+        $data->save();
+
+        return redirect()
+            ->action('UserController@index')
+            ->with('messages', ['Добавлен человек'])
+            ->with('status', 'success');
     }
 
     /**
@@ -56,7 +69,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = User::findOrFail($id);
+
+        return view('users.edit', compact('data'))
+            ->with('page_title', 'Люди')
+            ->with('page_subtitle', $data->name);
     }
 
     /**
@@ -68,7 +85,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = User::findOrFail($id);
+        $data->fill($request->all());
+        $data->save();
+
+        return redirect()
+            ->action('UserController@index')
+            ->with('messages', ['Сохранена запись человека'])
+            ->with('status', 'success');
+
     }
 
     /**
@@ -79,6 +104,12 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = User::findOrFail($id);
+        $data->delete();
+
+        return redirect()
+            ->action('UserController@index')
+            ->with('messages', ['Удалена запись человека'])
+            ->with('status', 'success');
     }
 }

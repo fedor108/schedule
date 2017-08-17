@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Event;
+use App\Practice;
 
 class EventController extends Controller
 {
@@ -13,7 +15,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $data = Event::all();
+        $practices = Practice::all();
+
+        return view('events.index',  compact('data', 'practices'))
+            ->with('page_title', 'Мероприятия');
     }
 
     /**
@@ -23,7 +29,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('events.create');
     }
 
     /**
@@ -34,7 +40,15 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Event;
+        $data->fill($request->all());
+
+        $data->save();
+
+        return redirect()
+            ->action('EventController@index')
+            ->with('messages', ['Добавлено мероприятие'])
+            ->with('status', 'success');
     }
 
     /**
@@ -56,7 +70,11 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Event::findOrFail($id);
+        $practices = Practice::all();
+
+        return view('events.edit', compact('data', 'practices'))
+            ->with('page_title', 'Мероприятия');
     }
 
     /**
@@ -68,7 +86,15 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Event::findOrFail($id);
+        $data->fill($request->all());
+        $data->save();
+
+        return redirect()
+            ->action('EventController@index')
+            ->with('messages', ['Сохранено мероприятие'])
+            ->with('status', 'success');
+
     }
 
     /**
@@ -79,6 +105,12 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Event::findOrFail($id);
+        $data->delete();
+
+        return redirect()
+            ->action('EventController@index')
+            ->with('messages', ['Удалена мероприятие'])
+            ->with('status', 'success');
     }
 }

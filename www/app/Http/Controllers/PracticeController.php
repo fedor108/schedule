@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Practice;
 
 class PracticeController extends Controller
 {
@@ -13,7 +14,9 @@ class PracticeController extends Controller
      */
     public function index()
     {
-        //
+        $data = Practice::all();
+        return view('practices.index',  compact('data'))
+            ->with('page_title', 'Практики');
     }
 
     /**
@@ -23,7 +26,7 @@ class PracticeController extends Controller
      */
     public function create()
     {
-        //
+        return view('practices.create');
     }
 
     /**
@@ -34,7 +37,15 @@ class PracticeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Practice;
+        $data->fill($request->all());
+
+        $data->save();
+
+        return redirect()
+            ->action('PracticeController@index')
+            ->with('messages', ['Добавлена практика'])
+            ->with('status', 'success');
     }
 
     /**
@@ -56,7 +67,10 @@ class PracticeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Practice::findOrFail($id);
+
+        return view('practices.edit', compact('data'))
+            ->with('page_title', 'Практики');
     }
 
     /**
@@ -68,7 +82,15 @@ class PracticeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Practice::findOrFail($id);
+        $data->fill($request->all());
+        $data->save();
+
+        return redirect()
+            ->action('PracticeController@index')
+            ->with('messages', ['Сохранена практика'])
+            ->with('status', 'success');
+
     }
 
     /**
@@ -79,6 +101,12 @@ class PracticeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Practice::findOrFail($id);
+        $data->delete();
+
+        return redirect()
+            ->action('PracticeController@index')
+            ->with('messages', ['Удалена практика'])
+            ->with('status', 'success');
     }
 }
