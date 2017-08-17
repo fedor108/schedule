@@ -1,6 +1,5 @@
 @php
   $nav = [
-    ['title' => 'Расписание', 'url' => action('ScheduleController@index')],
     ['title' => 'Мероприятия', 'url' => action('EventController@index')],
     ['title' => 'Практики', 'url' => action('PracticeController@index')],
     ['title' => 'Люди', 'url' => action('UserController@index')],
