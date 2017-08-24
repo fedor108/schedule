@@ -1,2 +1,2 @@
-FROM nginx:1.11.1-alpine
+FROM nginx:alpine
 COPY nginx.conf /etc/nginx/nginx.conf
