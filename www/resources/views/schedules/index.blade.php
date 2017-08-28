@@ -20,10 +20,10 @@
   <div class="box box-default">
     <div class="box-body">
       <table class="table">
-        @foreach($data as $item)
+        @foreach($data->sortBy('date_from_date') as $item)
           <tr>
             <td><a href="{{ action('ScheduleController@edit', $item->id) }}">{{ $item->event->title }}</a></td>
-            <td>{{ $item->date_from }}</td>
+            <td>{{ $item->date_from_date }}</td>
             <td>{{ $item->date_to }}</td>
             <td>
               {{ Form::open(['route' => ['practices.destroy', $item], 'method' => 'DELETE'], ['role' => 'form']) }}
@@ -64,6 +64,15 @@
           <div class="form-group">
             <label>Дата и время завершения</label>
             <input type="text" class="form-control" name="date_to" placeholder="Tuesday 21:30">
+          </div>
+
+          <div class="form-group">
+            <label>Инструктор</label>
+            <select class="form-control" name="user_id">
+              @foreach ($users as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+              @endforeach
+            </select>
           </div>
 
         </div>

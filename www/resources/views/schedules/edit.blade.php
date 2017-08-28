@@ -46,6 +46,15 @@
             <input type="text" class="form-control" name="date_to" value="{{ $data->date_to }}" placeholder="Tuesday 21:30">
           </div>
 
+          <div class="form-group">
+            <label>Инструктор</label>
+            <select class="form-control" name="user_id">
+              @foreach ($users as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+              @endforeach
+            </select>
+          </div>
+
         </div>
     </div>
     <!-- /.box-body -->

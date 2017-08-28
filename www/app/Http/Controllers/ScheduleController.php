@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Schedule;
 use App\Event;
+use App\User;
 
 class ScheduleController extends Controller
 {
@@ -15,10 +16,11 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $data = Schedule::all();
+        $data = Schedule::orderBy('date_from')->get();
         $events = Event::all();
+        $users = User::all();
 
-        return view('schedules.index',  compact('data', 'events'))
+        return view('schedules.index',  compact('data', 'events', 'users'))
             ->with('page_title', 'Расписание');
     }
 
@@ -72,8 +74,9 @@ class ScheduleController extends Controller
     {
         $data = Schedule::findOrFail($id);
         $events = Event::all();
+        $users = User::all();
 
-        return view('schedules.edit', compact('data', 'events'))
+        return view('schedules.edit', compact('data', 'events', 'users'))
             ->with('page_title', 'Расписание');
     }
 
