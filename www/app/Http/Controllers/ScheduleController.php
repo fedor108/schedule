@@ -116,4 +116,22 @@ class ScheduleController extends Controller
             ->with('messages', ['Удалено расписание'])
             ->with('status', 'success');
     }
+
+    public function days($date = null)
+    {
+        if (empty($date)) {
+            $date = date('Y-m-d');
+        }
+
+        $data = Schedule::getDay($date);
+
+        return response()->json(compact('data'));
+    }
+
+    public function regular()
+    {
+        $data = Schedule::getRegular();
+
+        return response()->json(compact('data'));
+    }
 }
