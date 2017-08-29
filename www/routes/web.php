@@ -11,10 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::resource('practices', 'PracticeController');
 Route::resource('events', 'EventController');
 Route::resource('schedules', 'ScheduleController');
@@ -22,3 +18,4 @@ Route::resource('users', 'UserController');
 
 Route::get('/days/{date?}', 'ScheduleController@days');
 Route::get('/regular', 'ScheduleController@regular');
+Route::get('/', 'ScheduleController@display');

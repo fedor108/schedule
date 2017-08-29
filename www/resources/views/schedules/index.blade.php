@@ -23,8 +23,9 @@
         @foreach($data->sortBy('date_from_date') as $item)
           <tr>
             <td><a href="{{ action('ScheduleController@edit', $item->id) }}">{{ $item->event->title }}</a></td>
-            <td>{{ $item->date_from_date }}</td>
+            <td>{{ $item->date_from }}</td>
             <td>{{ $item->date_to }}</td>
+            <td>{{ $item->users->implode('name', ' ') }}</td>
             <td>
               {{ Form::open(['route' => ['practices.destroy', $item], 'method' => 'DELETE'], ['role' => 'form']) }}
                 <button type="submit" class="btn btn-xs btn-danger">Удалить</button>

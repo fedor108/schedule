@@ -91,6 +91,7 @@ class ScheduleController extends Controller
     {
         $data = Schedule::findOrFail($id);
         $data->fill($request->all());
+        $data->users()->sync($request->input('user_id'));
         $data->save();
 
         return redirect()
@@ -133,5 +134,12 @@ class ScheduleController extends Controller
         $data = Schedule::getRegular();
 
         return response()->json(compact('data'));
+    }
+
+    public function display()
+    {
+        $data = Schedule::all();
+
+        return view('schedules.display', compact('data'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Schedule extends Model
 {
@@ -19,9 +20,19 @@ class Schedule extends Model
         return $this->belongsTo('App\Event');
     }
 
+    public function users()
+    {
+        return $this->morphToMany('App\User', 'userable');
+    }
+
     public function getDateFromDateAttribute()
     {
         return date("Y-m-d H:i", strtotime($this->date_from));
+    }
+
+    public function getCarbonDateFromAttribute()
+    {
+        return new Carbon($this->attributes['date_from']);
     }
 
     public static function getRegular()
@@ -32,7 +43,7 @@ class Schedule extends Model
             $query->orWhere('date_from', 'like', "%{$day}%");
         }
 
-        return self::query()->get();
+        return $query->get();
     }
 
     public static function getSingleAfter($date)
@@ -43,21 +54,22 @@ class Schedule extends Model
             $query->where('date_from', 'not like', "%{$day}%");
         }
 
-        echo $query->toSql();
-
-        return self::query()->get();
+        return $query->get();
     }
 
     public static function getDay($date)
     {
-        $day = date("Y-m-d", strtotime($date));
+        $day = new Carbon($date);
+
+        echo $day->dayOfWeek;
 
         $reqular = self::getRegular()->filter(function ($item) use ($day) {
-            return false !== strpos($item->date_from_date, $day);
+            echo " {$item->carbon_date_from->dayOfWeek} ";
+            return $item->carbon_date_from->dayOfWeek == $day->dayOfWeek;
         });
 
         $single = self::getSingleAfter($date)->filter(function ($item) use ($day) {
-            return false !== strpos($item->date_from_date, $day);
+            return $item->carbon_date_from->format('Y-m-d') == $day->format('Y-m-d');
         });
 
         return compact('reqular', 'single');
