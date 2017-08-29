@@ -25,11 +25,6 @@ class Schedule extends Model
         return $this->morphToMany('App\User', 'userable');
     }
 
-    public function getDateFromDateAttribute()
-    {
-        return date("Y-m-d H:i", strtotime($this->date_from));
-    }
-
     public function getCarbonDateFromAttribute()
     {
         return new Carbon($this->attributes['date_from']);
